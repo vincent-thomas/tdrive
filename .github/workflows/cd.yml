@@ -1,0 +1,45 @@
+name: CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: Produktion
+      url: ${{ steps.vercel-prod-deploy.outputs.preview-url }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Vercel CLI
+        run: pnpm install --global vercel@latest
+      - uses: amondnet/vercel-action@v20 #deploy
+        id: vercel-prod-deploy
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: "--prod"
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          github-comment: false
+          zeit-token: ${{secrets.VERCEL_TOKEN}}
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: build docker image
+        run: |
+          docker build . --tag ghcr.io/vincent-thomas/tdrive:latest
+          docker push ghcr.io/vincent-thomas/tdrive:latest
