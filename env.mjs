@@ -28,7 +28,9 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     AUTH_KEY: process.env.AUTH_KEY,
     APP_URL: `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
-      process.env.VERCEL_URL
+      process.env?.VERCEL_ENV === "production"
+        ? "drive.v-thomas.com"
+        : process.env.VERCEL_URL
     }`,
     NEXT_PUBLIC_APP_URL: `${
       process.env.NODE_ENV === "development" ? "http" : "https"
