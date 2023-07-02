@@ -1,10 +1,10 @@
-import { env } from "@/env.mjs";
 import { AResponse } from "@/utils/io";
 import { getUser } from "@/utils/user";
 import { prisma, s3 } from "@/clients";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
-
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { env } from "@/env.mjs";
 export const POST = async (req: NextRequest) => {
   const body = await req.text();
   const filename = req.nextUrl.searchParams.get("key") as string;
@@ -12,8 +12,6 @@ export const POST = async (req: NextRequest) => {
   const fileType = req.nextUrl.searchParams.get("file_type") as string;
 
   const user = await getUser(cookies());
-
-  // const user = await getUser(cookies());
 
   const dbParentFolder = await prisma.folder.findFirst({
     where: {
@@ -40,11 +38,13 @@ export const POST = async (req: NextRequest) => {
     },
   });
 
-  await s3.putObject({
+  const createFile = new PutObjectCommand({
     Key: `${user?.id as string}/${f.id}`,
     Body: body,
-    Bucket: env.S3_UPLOAD_BUCKET,
+    Bucket: env.S3_FILES_BUCKET,
   });
+
+  await s3.send(createFile);
 
   return AResponse({ ...f, body: body });
 };

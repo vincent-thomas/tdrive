@@ -8,15 +8,17 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     AUTH_KEY: z.string(),
-    S3_UPLOAD_ACCESS_KEY: z.string(),
-    S3_UPLOAD_SECRET: z.string(),
-    S3_UPLOAD_BUCKET: z.string(),
+    S3_FILES_ACCESS_KEY: z.string(),
+    S3_FILES_ACCESS_SECRET: z.string(),
+    S3_FILES_BUCKET: z.string(),
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url(),
     APP_URL: z.string(),
   },
 
-  client: {},
+  client: {
+    NEXT_PUBLIC_APP_URL: z.string().url(),
+  },
 
   /**
    * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
@@ -25,13 +27,15 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     AUTH_KEY: process.env.AUTH_KEY,
-    APP_URL:
-      process.env.VERCEL_URL !== undefined
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000",
-    S3_UPLOAD_ACCESS_KEY: process.env.S3_UPLOAD_KEY,
-    S3_UPLOAD_SECRET: process.env.S3_UPLOAD_SECRET,
-    S3_UPLOAD_BUCKET: process.env.S3_UPLOAD_BUCKET,
+    APP_URL: `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
+      process.env.VERCEL_URL
+    }`,
+    NEXT_PUBLIC_APP_URL: `${
+      process.env.NODE_ENV === "development" ? "http" : "https"
+    }://${process.env.NEXT_PUBLIC_VERCEL_URL}`,
+    S3_FILES_ACCESS_KEY: process.env.S3_UPLOAD_KEY,
+    S3_FILES_ACCESS_SECRET: process.env.S3_UPLOAD_SECRET,
+    S3_FILES_BUCKET: process.env.S3_UPLOAD_BUCKET,
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_URL: process.env.REDIS_URL,
   },

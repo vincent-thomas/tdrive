@@ -1,29 +1,24 @@
-import { AResponse } from "@/utils/io";
-import { prisma, redis } from "@/clients";
+import { redis } from "@/clients";
 import { randomUUID } from "crypto";
 import { type NextRequest, NextResponse } from "next/server";
-import { verifyHash } from "../utils/hash";
+import { getUser } from "@/utils/user";
+import { cookies } from "next/headers";
+import { env } from "@/env.mjs";
 
 export const GET = async (req: NextRequest) => {
-  const email = req.nextUrl.searchParams.get("email") as string;
-  const password = req.nextUrl.searchParams.get("password") as string;
-  const state = req.nextUrl.searchParams.get("state") as string;
   const callback = decodeURIComponent(
     req.nextUrl.searchParams.get("callback_url") as string
   );
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
+  const state = decodeURIComponent(req.nextUrl.searchParams.get("state") || "");
+  const user = await getUser(cookies());
+
   if (!user) {
-    return AResponse(null, { message: "User not found" }, { status: 401 });
-  }
-  const isPasswordCorrect = await verifyHash(user?.key, password);
-  if (!isPasswordCorrect)
-    return AResponse(
-      null,
-      { message: "User credentials is not correct" },
-      { status: 401 }
+    return NextResponse.redirect(
+      `${env.APP_URL}/oauth/login?callback_url=${encodeURIComponent(
+        callback
+      )}&state=${state}`
     );
+  }
 
   const code = randomUUID();
   await redis.set(`user:${user.id}:auth_code`, code);

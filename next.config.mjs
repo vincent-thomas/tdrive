@@ -13,9 +13,6 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   output: "standalone",
-  compiler: {
-    removeConsole: true,
-  },
   experimental: {
     serverActions: true,
   },

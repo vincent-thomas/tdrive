@@ -2,6 +2,7 @@ import { s3 } from "@/clients";
 import { env } from "@/env.mjs";
 import { getFile } from "@/utils/getContents";
 import { getUser } from "@/utils/user";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -29,10 +30,13 @@ export const GET = async (
   const file = await getFile(fileId, user?.id as string);
 
   try {
-    const s3File = await s3.getObject({
-      Bucket: env.S3_UPLOAD_BUCKET,
+    const getFile = new GetObjectCommand({
+      Bucket: env.S3_FILES_BUCKET,
       Key: `${user?.id}/${file?.id}`,
     });
+
+    const s3File = await s3.send(getFile);
+
     const bodyString = await streamToString(
       s3File.Body as NodeJS.ReadableStream
     );
