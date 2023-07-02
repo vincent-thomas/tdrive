@@ -1,5 +1,6 @@
 "use client";
 
+import { env } from "@/env.mjs";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -14,8 +15,8 @@ export const LoginButton = () => {
 
   return (
     <Link
-      href={`/oauth/login?callback_url=${encodeURIComponent(
-        `${window.location.origin}/callback`
+      href={`/oauth/authorize?callback_url=${encodeURIComponent(
+        `${env.NEXT_PUBLIC_APP_URL}/callback`
       )}&state=${state as string}`}
     >
       Login

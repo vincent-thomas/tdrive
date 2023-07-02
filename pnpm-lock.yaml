@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@aws-sdk/client-s3':
-    specifier: ^3.354.0
+    specifier: ^3.362.0
     version: 3.362.0(@aws-sdk/signature-v4-crt@3.357.0)(aws-crt@1.15.18)
   '@aws-sdk/signature-v4-crt':
     specifier: ^3.354.0
@@ -35,9 +35,6 @@ dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
-  formidable:
-    specifier: ^3.4.0
-    version: 3.5.0
   jsonwebtoken:
     specifier: ^9.0.0
     version: 9.0.0
@@ -1970,10 +1967,6 @@ packages:
       get-intrinsic: 1.2.1
     dev: true
 
-  /asap@2.0.6:
-    resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
-    dev: false
-
   /ast-types-flow@0.0.7:
     resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==}
     dev: true
@@ -2520,13 +2513,6 @@ packages:
   /detect-libc@2.0.1:
     resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
     engines: {node: '>=8'}
-    dev: false
-
-  /dezalgo@1.0.4:
-    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
-    dependencies:
-      asap: 2.0.6
-      wrappy: 1.0.2
     dev: false
 
   /didyoumean@1.2.2:
@@ -3138,14 +3124,6 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /formidable@3.5.0:
-    resolution: {integrity: sha512-WwsMWvPmY+Kv37C3+KP3A+2Ym1aZoac4nz4ZEe5z0UPBoCg0O/wHay3eeYkZr4KJIbCzpSUeno+STMhde+KCfw==}
-    dependencies:
-      dezalgo: 1.0.4
-      hexoid: 1.0.0
-      once: 1.4.0
-    dev: false
-
   /fraction.js@4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
@@ -3439,11 +3417,6 @@ packages:
     dependencies:
       glob: 7.2.3
       readable-stream: 3.6.2
-    dev: false
-
-  /hexoid@1.0.0:
-    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
-    engines: {node: '>=8'}
     dev: false
 
   /hosted-git-info@2.8.9:

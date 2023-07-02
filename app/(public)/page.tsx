@@ -16,11 +16,16 @@ const page = async () => {
           <SignInButton />
         </>
       ) : (
-        <a
-          href={`/oauth/logout?callback_url=${encodeURIComponent(env.APP_URL)}`}
-        >
-          Logout
-        </a>
+        <>
+          <a
+            href={`/oauth/logout?callback_url=${encodeURIComponent(
+              env.APP_URL
+            )}`}
+          >
+            Logout
+          </a>
+          <a href={`/drive/root`}>Go to drive</a>
+        </>
       )}
     </>
   );

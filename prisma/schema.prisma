@@ -26,7 +26,7 @@ model File {
   fileType  String
   fileSize  Int
 
-  parentFolder Folder @relation("file_folder", fields: [folderId], references: [id])
+  parentFolder Folder @relation("file_folder", fields: [folderId], references: [id], onDelete: Cascade)
   folderId     String
 
   createdAt DateTime @default(now())

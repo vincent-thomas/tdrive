@@ -21,8 +21,10 @@ const Page = () => {
     })
       .then((v) => v.json())
       .then((data: { status: "success" }) => {
-        if (data.status === "success") router.replace("/drive");
-        else throw Error("test");
+        if (data.status === "success") {
+          sessionStorage.removeItem("auth_state");
+          router.replace("/drive");
+        } else throw Error("test");
       });
   }, [router, searchParams]);
 

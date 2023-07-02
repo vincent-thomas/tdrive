@@ -6,6 +6,8 @@ import { CreateFolderButton } from "./create-folder-button";
 
 import type { ServerPage } from "@/types/page";
 import type { File } from "@prisma/client";
+import { DeleteFileButton } from "./delete-file-button";
+import { CreateFileButton } from "./create-file.button";
 
 const Page = async ({ params }: ServerPage) => {
   const user = await getUser(cookies());
@@ -17,6 +19,7 @@ const Page = async ({ params }: ServerPage) => {
   return (
     <>
       <CreateFolderButton parentFolderId={folder?.id as string} />
+      <CreateFileButton parentFolderId={folder?.id as string} />
       {folder !== null && folder?.parentFolderId !== null && (
         <Link
           href={`/drive/${
@@ -28,11 +31,12 @@ const Page = async ({ params }: ServerPage) => {
       )}
       <div>
         <h1>Files</h1>
-        <div className="flex gap-4">
-          {files.map((v: File) => (
-            <a key={v.id} href={`/export-file/${v.id}`}>
-              {v.filename}
-            </a>
+        <div className="flex flex-col gap-4">
+          {files.map((file: File) => (
+            <div key={file.id} className="flex gap-4">
+              <a href={`/export-file/${file.id}`}>{file.filename}</a>
+              <DeleteFileButton fileId={file.id} />
+            </div>
           ))}
         </div>
       </div>
