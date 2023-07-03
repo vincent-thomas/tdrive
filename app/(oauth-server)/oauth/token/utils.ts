@@ -1,10 +1,14 @@
-import { env } from "@/env.mjs";
+import { env } from "env.mjs";
 import jwt from "jsonwebtoken";
 
 type TScope = "email" | "name";
 
-export const createToken = (userId: string, roles: string[], scopes: TScope[]) => {
-  const date = new Date().getTime()
+export const createToken = (
+  userId: string,
+  roles: string[],
+  scopes: TScope[]
+) => {
+  const date = new Date().getTime();
 
   const payload = {
     sub: userId,
@@ -14,14 +18,14 @@ export const createToken = (userId: string, roles: string[], scopes: TScope[]) =
     aud: "client",
     data: {
       roles,
-      scopes
-    }
-  }
-  return jwt.sign(payload, env.AUTH_KEY, {algorithm: "HS512"});
+      scopes,
+    },
+  };
+  return jwt.sign(payload, env.AUTH_KEY, { algorithm: "HS512" });
 };
 
 export const createTokenHeaders = (accessToken: string) => {
   return {
-    "Set-Cookie": `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`
-  }
-}
+    "Set-Cookie": `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`,
+  };
+};

@@ -5,27 +5,6 @@ on:
     branches: ["main"]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: Produktion
-      url: ${{ steps.vercel-prod-deploy.outputs.preview-url }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: Install Vercel CLI
-        run: pnpm install --global vercel@latest
-      - uses: amondnet/vercel-action@v20 #deploy
-        id: vercel-prod-deploy
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-args: "--prod"
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          github-comment: false
-          zeit-token: ${{secrets.VERCEL_TOKEN}}
   publish:
     runs-on: ubuntu-latest
     permissions:

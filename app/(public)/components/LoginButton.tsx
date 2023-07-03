@@ -1,25 +1,19 @@
 "use client";
 
-import { env } from "@/env.mjs";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { loginAuthStateGen } from "./loginHandler";
+import { utils } from "@/services/utils";
 
 export const LoginButton = () => {
-  const [state, setState] = useState<string>();
-
-  useEffect(() => {
-    const newState = crypto.randomUUID();
-    setState(newState);
-    sessionStorage.setItem("auth_state", newState);
-  }, []);
-
   return (
-    <Link
-      href={`/oauth/authorize?callback_url=${encodeURIComponent(
-        `${env.NEXT_PUBLIC_APP_URL}/callback`
-      )}&state=${state as string}`}
+    <button
+      onClick={async () => {
+        const result = await loginAuthStateGen();
+        window.location.href = `/oauth/authorize?callback_url=${encodeURIComponent(
+          `${utils.getAppUrl()}/callback`
+        )}&state=${result.state}`;
+      }}
     >
       Login
-    </Link>
+    </button>
   );
 };

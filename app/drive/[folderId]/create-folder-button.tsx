@@ -1,24 +1,30 @@
-import { getUser } from "@/utils/user";
-import { revalidatePath } from "next/cache";
-import { createFolder } from "@/utils/folder";
-import { cookies } from "next/headers";
+"use client";
+import { utils } from "@/services/utils";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
-interface CreateFolderI {
-  parentFolderId: string;
+interface FormInput {
+  folderName: string;
 }
 
-export async function CreateFolderButton(props: CreateFolderI) {
-  async function putFolder(data: FormData) {
-    "use server";
-    const user = await getUser(cookies());
-    const folderKey = data.get("folderName") as string;
-    await createFolder(folderKey, user?.id as string, props.parentFolderId);
-    revalidatePath(`/drive/${props.parentFolderId || "root"}`);
-  }
-
+export function CreateFolderButton({
+  parentFolderId,
+}: {
+  parentFolderId: string;
+}) {
+  const { register, handleSubmit } = useForm<FormInput>();
+  const onSubmit: SubmitHandler<FormInput> = async ({ folderName }) => {
+    await fetch(`${utils.getAppUrl()}/api/uploadFolder`, {
+      method: "PUT",
+      body: JSON.stringify({
+        key: folderName,
+        parentFolderId: parentFolderId === "root" ? undefined : parentFolderId,
+        root: parentFolderId === "root",
+      }),
+    });
+  };
   return (
-    <form action={putFolder}>
-      <input type="text" name="folderName" />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("folderName")} />
       <button type="submit">Create Folder</button>
     </form>
   );
