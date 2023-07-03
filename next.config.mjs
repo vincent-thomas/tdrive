@@ -25,5 +25,9 @@ const config = {
       },
     ];
   },
+  images: {
+    domains: ["api.dicebear.com"],
+    dangerouslyAllowSVG: true,
+  },
 };
 export default analyze(config);

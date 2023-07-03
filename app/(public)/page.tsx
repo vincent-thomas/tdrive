@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
-import { getUser } from "@/utils/user";
+import { api } from "@/services/api";
 import { LoginButton } from "./components/LoginButton";
 import { SignInButton } from "./components/SignInButton";
-import { env } from "@/env.mjs";
+import { utils } from "@/services/utils";
 
 const page = async () => {
-  const user = await getUser(cookies());
+  const user = await api.getUser();
 
   return (
     <>
@@ -17,13 +16,7 @@ const page = async () => {
         </>
       ) : (
         <>
-          <a
-            href={`/oauth/logout?callback_url=${encodeURIComponent(
-              env.APP_URL
-            )}`}
-          >
-            Logout
-          </a>
+          <a href={`/oauth/logout?callback_url=${utils.getAppUrl()}`}>Logout</a>
           <a href={`/drive/root`}>Go to drive</a>
         </>
       )}

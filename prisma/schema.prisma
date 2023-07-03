@@ -9,11 +9,12 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  name         String?
-  key          String
-  foldersOwned Folder[]
+  id             String   @id @default(uuid())
+  email          String   @unique
+  name           String?
+  key            String
+  encryption_key Bytes
+  foldersOwned   Folder[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

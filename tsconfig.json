@@ -35,7 +35,7 @@
     "**/*.mjs",
     ".next/types/**/*.ts",
     ".prettierrc.cjs",
-    "clients.ts"
+    "services/clients.ts"
   ],
   "exclude": ["node_modules"]
 }
